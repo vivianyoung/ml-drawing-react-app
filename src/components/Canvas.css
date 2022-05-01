@@ -1,0 +1,36 @@
+.Canvas {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.left-align {
+    align-self: flex-start;
+}
+
+#canvas-wrapper {
+    width: 640px;
+    height: 480px;
+    overflow: hidden;
+}
+
+#control-panel {
+    margin-top: 5em;
+
+    display: grid;
+    grid-template-columns: 25% 75%;
+}
+
+#stroke-slider {
+    width: 100%;
+}
