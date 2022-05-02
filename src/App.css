@@ -15,9 +15,11 @@
 }
 
 #app-container {
-  margin:0 5%;
+  margin: 0 5%;
   width: 90%;
-  padding: 3% 0;
+  height: auto;
+  /* max-height: 90vh; */
+  padding: 2em 0;
   overflow: hidden;
   border: 0;
 	position: fixed;

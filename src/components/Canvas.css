@@ -1,17 +1,9 @@
 .Canvas {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     font-size: 12px;
-}
-
-.content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
 }
 
 .left-align {
@@ -54,7 +46,7 @@
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
-    background-color: #A66794;
+    background-color: #808080;
     padding-top: 1em;
     margin-bottom: -2em;
 }
@@ -88,7 +80,7 @@
 
 #middle-left {
     width: 28.5%;
-    background-color: #A66794;
+    background-color: #808080;
     height: 5em;
     margin: 0;
     padding: 0;
@@ -157,11 +149,11 @@
 }
 
 .color-picker {
-    background-color: #A66794;
+    background-color: #808080;
 }
 
 #color-palette {
-    background-color: #A66794;
+    background-color: #808080;
     padding: 1em 0;
     margin-bottom: -2em;
 }
