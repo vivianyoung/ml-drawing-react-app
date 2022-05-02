@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import ReactDOM from 'react-dom';
 import axios from 'axios';
 import * as mi from '@magenta/image';
 
@@ -23,6 +24,9 @@ const StylePanel = (props) => {
     const [imgSrc, setImgSrc] = useState('');
     const [showResults, setShowResults] = useState(false);
     const [showImg, setShowImg] = useState(false);
+
+    const [oldCanvas, setOldCanvas] = useState(null);
+    const oldCanvasRef = useRef(oldCanvas);
 
     const fetchImages = (clearData=false) => {
         if (clearData) {
@@ -79,6 +83,10 @@ const StylePanel = (props) => {
     }
 
     const stylize = () => {
+        // save old canvas
+        setOldCanvas(props.canvasImgRef);
+        oldCanvasRef.current = props.canvasImgRef;
+
         const contentImg = props.canvasImgRef.current;
         const styleImg = props.styleImgRef.current;
         const stylizedCanvas = props.canvasRef.current.children[1];
@@ -91,11 +99,25 @@ const StylePanel = (props) => {
     }
 
     const handleTransferClick = () => {
-       model.initialize().then(stylize);
+        model.initialize().then(stylize);
     }
 
     const handleUndoClick = () => {
+        console.log(oldCanvasRef.current.current);
 
+        const contentImg = oldCanvasRef.current.current;
+        const stylizedCanvas = props.canvasRef.current.children[1];
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = contentImg.width;
+        canvas.height = contentImg.height;
+        ctx.drawImage(contentImg, 0, 0);
+        const canvasData = ctx.getImageData(0,0,contentImg.width, contentImg.height);
+        console.log(canvasData);
+
+        stylizedCanvas.getContext('2d').putImageData(canvasData,0,0);
     }
     
     return (
@@ -152,7 +174,7 @@ const StylePanel = (props) => {
                             </div>
 
                             <div className='transfer-btns-div'>
-                                <button onClick={()=>handleUndoClick()}>undo style transfer</button>
+                                {/* <button onClick={()=>handleUndoClick()}>undo style transfer</button> */}
                                 <button onClick={()=>handleTransferClick()}>apply image style</button>
                             </div>
                         </div>

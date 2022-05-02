@@ -41,9 +41,9 @@ const Canvas = (props) => {
         }
 	};
 
-    // press 'backspace' to clear canvas
+    // press 'esc' to clear canvas
     const keyPressed = (p5) => {
-        if (p5.keyCode === p5.BACKSPACE) {
+        if (p5.keyCode === p5.ESCAPE) {
             p5.background(255);
         }
     }
@@ -71,7 +71,7 @@ const Canvas = (props) => {
 
         paletteColors.forEach((color, i) => {
             colorBtns.push(
-                <div className='color-div'>
+                <div className='color-div' key={color}>
                     <button id={`colorBtn-${i}`} style={ { backgroundColor: `${ color }` } } value={color} onClick={(e) => setPaintColor(e.target.value)}>
                     </button>
                 </div>
@@ -86,7 +86,7 @@ const Canvas = (props) => {
             <div id='content'>
 
                 <div id='instructions-div' className='left-align'>
-                    <p>press backspace to clear canvas.</p>
+                    <p>press 'esc' to clear canvas.</p>
                 </div>
 
                 <div id='canvas-wrapper' ref={props.canvasRef}>
