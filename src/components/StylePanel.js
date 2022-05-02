@@ -79,13 +79,13 @@ const StylePanel = (props) => {
     }
 
     const stylize = () => {
-        
         const contentImg = props.canvasImgRef.current;
         const styleImg = props.styleImgRef.current;
         const stylizedCanvas = props.canvasRef.current.children[1];
 
         model.stylize(contentImg, styleImg)
         .then( (imageData) => {
+            console.log(imageData);
             stylizedCanvas.getContext('2d').putImageData(imageData,0,0);
         });
     }
@@ -148,7 +148,7 @@ const StylePanel = (props) => {
                     showImg ?
                         <div>
                             <div className='selected-img-div'>
-                                <img id='selected-img' src={imgSrc} ref={props.styleImgRef} crossOrigin="anonymous" />
+                                <img id='selected-img' src={imgSrc} ref={props.styleImgRef} crossOrigin="anonymous" /> 
                             </div>
 
                             <div className='transfer-btns-div'>

@@ -92,7 +92,7 @@ const Canvas = (props) => {
                 <div id='canvas-wrapper' ref={props.canvasRef}>
                     <Sketch setup={setup} draw={draw} keyPressed={keyPressed}/>
                 </div>
-                <img id="canvas-img" width="640" height="480" src="" crossOrigin="anonymous" ref={props.canvasImgRef}/>
+                <img id="canvas-img" width="1280" height="960" src="" crossOrigin="anonymous" ref={props.canvasImgRef}/>
 
                 <div id='control-panel'>
                     <div id='stroke-control'>

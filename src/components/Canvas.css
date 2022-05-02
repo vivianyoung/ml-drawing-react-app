@@ -175,3 +175,8 @@
 #canvas-img {
     display: none;
 }
+
+#p5canvas {
+    width: 640px;
+    height: 480px;
+}
