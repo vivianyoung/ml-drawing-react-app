@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import * as mi from '@magenta/image';
 
@@ -13,14 +13,26 @@ const model = new mi.ArbitraryStyleTransferNetwork();
 const StylePanel = (props) => {
     // state vars for api stuff
     const [query, setQuery] = useState('');
+
     const [page, setPage] = useState(1);
+    const pageRef = useRef(page);
+
     const [searchData, setSearchData] = useState([]);
+    const searchDataRef = useRef(searchData);
+
     const [imgSrc, setImgSrc] = useState('');
     const [showResults, setShowResults] = useState(false);
     const [showImg, setShowImg] = useState(false);
 
-    const fetchImages = () => {
-        let fetchUrl = `https://api.unsplash.com/search/photos?client_id=${UNSPLASH_API_KEY}&query=${query}&per_page=10&page=${page}`;
+    const fetchImages = (clearData=false) => {
+        if (clearData) {
+            // wipe original search data
+            setSearchData([]);
+            searchDataRef.current = [];
+        }
+
+        // search unsplash api for images
+        let fetchUrl = `https://api.unsplash.com/search/photos?client_id=${UNSPLASH_API_KEY}&query=${query}&per_page=10&page=${pageRef.current}`;
 
         axios.get(fetchUrl, {headers: {}})
         .then( (response) => {
@@ -31,16 +43,18 @@ const StylePanel = (props) => {
 
             switch (response.data.total > 0) {
                 case true:
+                    searchDataRef.current = searchDataRef.current.concat(response.data.results);
                     setSearchData([...searchData, ...response.data.results]);
                     break;
                 case false:
+                    searchDataRef.current = [];
                     setSearchData([]);
                     break;
             }
         })
         .catch( (error) => {
             // console.log(error);
-
+            searchDataRef.current = [];
             setShowResults(false);
             setSearchData([]);
         });
@@ -48,12 +62,15 @@ const StylePanel = (props) => {
 
     const handleInputChange = (e) => {
         setPage(1);
+        pageRef.current = 1;
+
         setQuery(e.target.value);
     }
 
     const handleDisplayMore = () => {
         setPage(page + 1);
-        fetchImages();
+        pageRef.current += 1;
+        fetchImages(false);
     }
 
     const handleSearchImageClick = (e) => {
@@ -99,7 +116,7 @@ const StylePanel = (props) => {
                         onInput={(e) => handleInputChange(e)}
                     />
 
-                    <button onClick={() => fetchImages()}>search</button>
+                    <button onClick={() => fetchImages(true)}>search</button>
                 </div>
 
 
@@ -108,8 +125,8 @@ const StylePanel = (props) => {
                         <div className='search-results-div'>
                             <div className='results-content'>
                                 {
-                                    searchData.length > 0 ? 
-                                        searchData.map((imgData) => (
+                                    searchDataRef.current.length > 0 ? 
+                                        searchDataRef.current.map((imgData) => (
                                             <div className='search-result-img-div'>
                                                 <img className='search-result-img' src={imgData.urls.regular} onClick={(e) => handleSearchImageClick(e)}></img>
                                             </div>
