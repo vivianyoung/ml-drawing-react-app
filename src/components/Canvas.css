@@ -54,7 +54,7 @@
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
-    background-color: #A5A5A5;
+    background-color: #A66794;
     padding-top: 1em;
     margin-bottom: -2em;
 }
@@ -88,7 +88,7 @@
 
 #middle-left {
     width: 28.5%;
-    background-color: #A5A5A5;
+    background-color: #A66794;
     height: 5em;
     margin: 0;
     padding: 0;
@@ -157,11 +157,11 @@
 }
 
 .color-picker {
-    background-color: #A5A5A5;
+    background-color: #A66794;
 }
 
 #color-palette {
-    background-color: #A5A5A5;
+    background-color: #A66794;
     padding: 1em 0;
     margin-bottom: -2em;
 }
