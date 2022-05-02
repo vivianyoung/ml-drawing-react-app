@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import * as mi from '@magenta/image';
 
 import './StylePanel.css';
 
+// unsplash stuff
 const UNSPLASH_API_KEY = process.env.REACT_APP_UNSPLASH_API_KEY;
-console.log(UNSPLASH_API_KEY);
 
-const StylePanel = () => {
+// magenta stuff
+const model = new mi.ArbitraryStyleTransferNetwork();
+
+const StylePanel = (props) => {
     // state vars for api stuff
     const [query, setQuery] = useState('');
     const [page, setPage] = useState(1);
@@ -16,15 +20,12 @@ const StylePanel = () => {
     const [showImg, setShowImg] = useState(false);
 
     const fetchImages = () => {
-        console.log(`query: ${query}`);
-        console.log(`page num: ${page}`);
-
         let fetchUrl = `https://api.unsplash.com/search/photos?client_id=${UNSPLASH_API_KEY}&query=${query}&per_page=10&page=${page}`;
 
         axios.get(fetchUrl, {headers: {}})
         .then( (response) => {
-            console.log(response);
-            console.log(`found ${response.data.total} results`);
+            // console.log(response);
+            // console.log(`found ${response.data.total} results`);
             
             setShowResults(true);
 
@@ -38,7 +39,7 @@ const StylePanel = () => {
             }
         })
         .catch( (error) => {
-            console.log(error);
+            // console.log(error);
 
             setShowResults(false);
             setSearchData([]);
@@ -56,13 +57,24 @@ const StylePanel = () => {
     }
 
     const handleSearchImageClick = (e) => {
-        console.log(e.target);
         setImgSrc(e.target.src);
         setShowImg(true);
     }
 
-    const handleTransferClick = () => {
+    const stylize = () => {
+        
+        const contentImg = props.canvasImgRef.current;
+        const styleImg = props.styleImgRef.current;
+        const stylizedCanvas = props.canvasRef.current.children[1];
 
+        model.stylize(contentImg, styleImg)
+        .then( (imageData) => {
+            stylizedCanvas.getContext('2d').putImageData(imageData,0,0);
+        });
+    }
+
+    const handleTransferClick = () => {
+       model.initialize().then(stylize);
     }
 
     const handleUndoClick = () => {
@@ -119,7 +131,7 @@ const StylePanel = () => {
                     showImg ?
                         <div>
                             <div className='selected-img-div'>
-                                <img id='selected-img' src={imgSrc} />
+                                <img id='selected-img' src={imgSrc} ref={props.styleImgRef} crossOrigin="anonymous" />
                             </div>
 
                             <div className='transfer-btns-div'>

@@ -4,7 +4,7 @@ import chroma from "chroma-js";
 
 import './Canvas.css';
 
-const Canvas = () => {
+const Canvas = (props) => {
     const [penSize, setPenSize] = useState('15');
     const [paintColor, setPaintColor] = useState('#000000');
 
@@ -15,8 +15,6 @@ const Canvas = () => {
 
     let minPenSize = 5;
     let maxPenSize = 100;
-
-    // let paletteColors = [];
     
     let p5canvas;
     const setup = (p5, canvasParentRef) => {
@@ -34,6 +32,12 @@ const Canvas = () => {
             p5.fill(strokeColor);
             p5.strokeWeight(penSize);
             p5.line(p5.mouseX, p5.mouseY, p5.pmouseX, p5.pmouseY);
+
+            // TODO: update canvas img to be a copy of the canvas
+            let canvas = props.canvasRef.current.children[1];
+            let canvasImgSrc = canvas.toDataURL();
+
+            props.canvasImgRef.current.setAttribute('src', canvasImgSrc); // copy canvas as image
         }
 	};
 
@@ -59,7 +63,6 @@ const Canvas = () => {
 
         // update color palette
         let paletteResults = chroma.scale( [paletteEndColor1, paletteEndColor2] ).mode('lch').colors(7);
-        console.log(paletteResults);
         setPaletteColors(paletteResults);
     }
     
@@ -86,9 +89,10 @@ const Canvas = () => {
                     <p>press backspace to clear canvas.</p>
                 </div>
 
-                <div id='canvas-wrapper'>
+                <div id='canvas-wrapper' ref={props.canvasRef}>
                     <Sketch setup={setup} draw={draw} keyPressed={keyPressed}/>
                 </div>
+                <img id="canvas-img" width="640" height="480" src="" crossOrigin="anonymous" ref={props.canvasImgRef}/>
 
                 <div id='control-panel'>
                     <div id='stroke-control'>

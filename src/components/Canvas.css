@@ -171,3 +171,7 @@
     width: 2.5em;
     border: none;
 }
+
+#canvas-img {
+    display: none;
+}
